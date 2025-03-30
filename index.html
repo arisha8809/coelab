@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security System Login</title>
+    <style>
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            text-align: center;
+            margin-top: 100px;
+        }
+        input {
+            background: black;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background: black;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #00ff00;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔒 Secure Access Required</h1>
+    <p>Enter Password to Proceed:</p>
+    
+    <input type="password" id="password">
+    <button onclick="checkPassword()">Enter</button>
+
+    <script>
+        function checkPassword() {
+            const password = document.getElementById("password").value;
+            if (password === "intrusion42") {  // Hidden password
+                window.location.href = "logviewer.html";  // Redirect to next step
+            } else {
+                alert("Access Denied! Incorrect Password.");
+            }
+        }
+    </script>
+    
+</body>
+</html>

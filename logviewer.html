@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Log Viewer</title>
+    <style>
+        body {
+            background-color: black;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            text-align: center;
+            user-select: none;
+        }
+
+        /* Terminal Log Container */
+        .terminal {
+            border: 1px solid #00ff00;
+            padding: 20px;
+            width: 60%;
+            margin: auto;
+            text-align: left;
+            background-color: #111;
+        }
+
+        /* Log Items */
+        .log {
+            cursor: grab;
+            color: #00ff00;
+            padding: 5px;
+            border-bottom: 1px dashed #00ff00;
+        }
+
+        .log:hover {
+            text-decoration: underline;
+        }
+
+        /* Hidden Terminal Icon */
+        #terminal-icon {
+            position: fixed;
+            top: 10px;
+            width: 70px;
+            height: 60px;
+            background-image: url('placeholder.png'); /* Replace with terminal icon */
+            background-size: cover;
+            display: none;
+            cursor: pointer;
+        }
+
+        /* Terminal Window */
+        #real-terminal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 350px;
+            background-color: black;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+            padding: 10px;
+            text-align: left;
+            overflow: hidden;
+            resize: both;
+            cursor: move;
+        }
+
+        /* Terminal Header */
+        #terminal-header {
+            background-color: #00ff00;
+            color: black;
+            padding: 5px;
+            cursor: grab;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Terminal Body */
+        .terminal-body {
+            color: #00ff00;
+            font-size: 14px;
+            font-family: "Courier New", monospace;
+            padding: 10px;
+            height: 250px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        /* Close Button */
+        #close-btn {
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Command Line Input */
+        .input-box {
+            border: none;
+            background: black;
+            color: #00ff00;
+            font-family: "Courier New", monospace;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>🔓 SECURITY BREACH: Unauthorized Log Access</h2>
+
+    <!-- Terminal Icon (Initially Hidden) -->
+    <div id="terminal-icon" onclick="openTerminal()"></div>
+
+    <!-- Log Drag & Drop Section -->
+    <div class="terminal">
+        <p>Accessing logs from compromised system...</p>
+        <p>Here are some logs from the system:</p>
+        <ul id="logs">
+            <li class="log" draggable="true" ondragstart="drag(event)" id="log6">06:30:01 Execution of unauthorized script</li>
+            <li class="log" draggable="true" ondragstart="drag(event)" id="log3">03:45:28 Database corruption event logged</li>
+            <li class="log" draggable="true" ondragstart="drag(event)" id="log1">01:15:32 Connection attempt detected from IP 208.64.38.5</li>
+            <li class="log" draggable="true" ondragstart="drag(event)" id="log5">05:55:42 Remote exploit triggered in IIS server</li>
+            <li class="log" draggable="true" ondragstart="drag(event)" id="log2">02:03:11 Override command issued by root user</li>
+            <li class="log" draggable="true" ondragstart="drag(event)" id="log4">04:22:09 Elevated privileges granted to unknown process</li>
+            <li class="log" draggable="true" ondragstart="drag(event)" id="log6-alt">06:45:55 Data exfiltration attempt detected</li>
+
+        </ul>
+    </div>
+
+    <!-- Terminal Popup -->
+    <div id="real-terminal">
+        <div id="terminal-header">
+            <span>Terminal</span>
+            <span id="close-btn" onclick="closeTerminal()">✖</span>
+        </div>
+        <div class="terminal-body" id="terminal-body">C:\Users\Admin></div>
+        <input type="text" id="password-input" class="input-box" placeholder="Enter Password..." onkeydown="checkPassword(event)">
+    </div>
+
+    <script>
+        let correctOrder = ["log1", "log2", "log3", "log4", "log5", "log6","log6-alt"]; // Correct sequence
+        let draggedItem = null;
+
+        function drag(event) {
+            draggedItem = event.target;
+        }
+
+        document.getElementById("logs").addEventListener("dragover", function(event) {
+            event.preventDefault();
+        });
+
+        document.getElementById("logs").addEventListener("drop", function(event) {
+            event.preventDefault();
+            if (event.target.classList.contains("log")) {
+                event.target.parentNode.insertBefore(draggedItem, event.target);
+                checkOrder(); // Check order after every move
+            }
+        });
+
+        function checkOrder() {
+            let logs = document.getElementById("logs").children;
+            let isCorrect = true;
+            for (let i = 0; i < logs.length; i++) {
+                if (logs[i].id !== correctOrder[i]) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+
+            if (isCorrect) {
+                document.getElementById("terminal-icon").style.display = "block"; // Show terminal icon
+            }
+        }
+
+        function openTerminal() {
+            let terminal = document.getElementById("real-terminal");
+            let terminalBody = document.getElementById("terminal-body");
+
+            terminal.style.display = "block";
+            let logs = `
+C:\\Users\\Admin> SYSTEM LOG REVIEW...
+C:\\Users\\Admin> EMERGENCY OVERRIDE IN EFFECT
+C:\\Users\\Admin> OUTGOING CONNECTIONS DISABLED
+C:\\Users\\Admin> OPERATIONAL LOGS CORRUPTED
+C:\\Users\\Admin> Sometimes, the truth lies in the first step of every path.
+C:\\Users\\Admin> TERMINAL ACCESS GRANTED
+C:\\Users\\Admin> ENTER SECURITY PHRASE TO CONTINUE: _
+            `;
+
+            let index = 0;
+            function typeEffect() {
+                if (index < logs.length) {
+                    terminalBody.innerHTML += logs.charAt(index);
+                    index++;
+                    setTimeout(typeEffect, 40);
+                } else {
+                    document.getElementById("password-input").style.display = "block";
+                }
+            }
+
+            setTimeout(typeEffect, 400);
+        }
+
+        function checkPassword(event) {
+            if (event.key === "Enter") {
+                let input = document.getElementById("password-input").value.trim();
+                let correctPassword = "CODERED"; // First letters of terminal messages
+
+                if (input === correctPassword) {
+                    document.getElementById("terminal-body").innerHTML += `
+C:\\Users\\Admin> ACCESS GRANTED!
+C:\\Users\\Admin> MALWARE IDENTIFIED: CODE RED WORM
+C:\\Users\\Admin> THREAT MITIGATION: PATCH SYSTEM IMMEDIATELY
+                    `;
+                } else {
+                    document.getElementById("terminal-body").innerHTML += `
+C:\\Users\\Admin> ❌ INCORRECT PASSWORD! TRY AGAIN.
+                    `;
+                }
+            }
+        }
+
+        function closeTerminal() {
+            document.getElementById("real-terminal").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
